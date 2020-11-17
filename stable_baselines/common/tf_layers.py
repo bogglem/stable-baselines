@@ -29,7 +29,7 @@ def ortho_init(scale=1.0):
         shape = tuple(shape)
         if len(shape) == 2:
             flat_shape = shape
-        elif len(shape) == 4:  # assumes NHWC
+        elif len(shape) > 2:  #  #NHWC ==4
             flat_shape = (np.prod(shape[:-1]), shape[-1])
         else:
             raise NotImplementedError
@@ -110,7 +110,7 @@ def conv(input_tensor, scope, *, n_filters, filter_size, stride,
 def conv3d(input_tensor, scope, *, n_filters, filter_size, stride,
          pad='VALID', init_scale=1.0, data_format='NDHWC', one_dim_bias=False):
     """
-    Creates a 2d convolutional layer for TensorFlow
+    Creates a 3d convolutional layer for TensorFlow
 
     :param input_tensor: (TensorFlow Tensor) The input tensor for the convolution
     :param scope: (str) The TensorFlow variable scope
