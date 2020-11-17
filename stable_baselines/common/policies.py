@@ -29,6 +29,7 @@ def nature_cnn(scaled_images, **kwargs):
     return activ(linear(layer_3, 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
 
 
+
 def cnn3D(scaled_images, **kwargs):
     """
     Custom 3d CNN.
