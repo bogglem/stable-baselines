@@ -155,6 +155,22 @@ def conv3d(input_tensor, scope, *, n_filters, filter_size, stride,
         return bias + tf.nn.conv3d(input_tensor, weight, strides=strides, padding=pad, data_format=data_format)
 
 
+def maxpool3d(input_tensor, ksize, strides, padding, data_format='NDHWC', name=None):
+    """
+    Creates a 3d maxpool layer for TensorFlow
+
+    :param input_tensor: (TensorFlow Tensor) A 5-D Tensor of the format specified by data_format. 
+    :param ksize: (int)  An int or list of ints that has length 1, 3 or 5. The size of the window for each dimension of the input tensor. 
+    :param strides: (int) An int or list of ints that has length 1, 3 or 5. The stride of the sliding window for each dimension of the input tensor. 
+    :param padding: (str)  A string, either 'VALID' or 'SAME'.
+    :param data_format: (str) An optional string from: "NDHWC", "NCDHW". Defaults to "NDHWC". The data format of the input and output data. With the default format "NDHWC", the data is stored in the order of: [batch, in_depth, in_height, in_width, in_channels]. Alternatively, the format could be "NCDHW", the data storage order is: [batch, in_channels, in_depth, in_height, in_width]. 
+    :param name: (str) A name for the operation (optional). 
+    :return: (TensorFlow Tensor) 3d maxpool layer
+    """
+
+    return tf.nn.max_pool3d(input_tensor, ksize, strides, padding, data_format, name)
+
+
 
 def linear(input_tensor, scope, n_hidden, *, init_scale=1.0, init_bias=0.0):
     """

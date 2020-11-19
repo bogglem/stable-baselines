@@ -7,7 +7,7 @@ import tensorflow as tf
 from gym.spaces import Discrete
 
 from stable_baselines.common.tf_util import batch_to_seq, seq_to_batch
-from stable_baselines.common.tf_layers import conv, conv3d, linear, conv_to_fc, lstm
+from stable_baselines.common.tf_layers import conv, conv3d, linear, conv_to_fc, lstm, maxpool3d
 from stable_baselines.common.distributions import make_proba_dist_type, CategoricalProbabilityDistribution, \
     MultiCategoricalProbabilityDistribution, DiagGaussianProbabilityDistribution, BernoulliProbabilityDistribution
 from stable_baselines.common.input import observation_input
@@ -41,9 +41,10 @@ def cnn3D(scaled_images, **kwargs):
     activ = tf.nn.relu
     layer_1 = activ(conv3d(scaled_images, 'c1', n_filters=32, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_2 = activ(conv3d(layer_1, 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
-    #layer_3 = activ(conv3d(layer_2, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
-    layer_3 = conv_to_fc(layer_2)
-    return activ(linear(layer_3, 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
+    layer_3 = maxpool3d(layer_2, 2,1, 'VALID')
+    #layer_4 = activ(conv3d(layer_3, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_4 = conv_to_fc(layer_3)
+    return activ(linear(layer_4, 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
 
 
 
