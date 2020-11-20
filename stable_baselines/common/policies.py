@@ -30,7 +30,7 @@ def nature_cnn(scaled_images, **kwargs):
 
 
 
-def cnn3D(scaled_images, **kwargs):
+def cnn3D(input_space, **kwargs):
     """
     Custom 3d CNN.
 
@@ -39,12 +39,14 @@ def cnn3D(scaled_images, **kwargs):
     :return: (TensorFlow Tensor) The CNN output layer
     """
     activ = tf.nn.relu
-    layer_1 = activ(conv3d(scaled_images, 'c1', n_filters=32, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
+    layer_1 = activ(conv3d(input_space, 'c1', n_filters=32, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_2 = activ(conv3d(layer_1, 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_3 = maxpool3d(layer_2, 2,1, 'VALID')
     #layer_4 = activ(conv3d(layer_3, 'c3', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), **kwargs))
     layer_4 = conv_to_fc(layer_3)
-    return activ(linear(layer_4, 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
+    layer_5 = activ(linear(layer_4, 'fc1', n_hidden=32, init_scale=np.sqrt(2)))
+    
+    return activ(linear(layer_5, 'fc2', n_hidden=64, init_scale=np.sqrt(2)))
 
 
 
